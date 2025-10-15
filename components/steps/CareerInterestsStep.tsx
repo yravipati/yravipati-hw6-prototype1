@@ -1,5 +1,8 @@
-import React from 'react';
+'use client';
+
+import { useFormContext, Controller } from 'react-hook-form';
 import {
+  Box,
   Typography,
   FormControl,
   FormLabel,
@@ -7,10 +10,8 @@ import {
   FormControlLabel,
   Checkbox,
   FormHelperText,
-  Box,
   Chip,
 } from '@mui/material';
-import { useFormContext, Controller } from 'react-hook-form';
 
 const careerOptions = [
   { value: 'tech-software', label: 'Tech - Software Engineering', category: 'Technology' },
@@ -31,10 +32,13 @@ const careerOptions = [
   { value: 'government', label: 'Government & Public Policy', category: 'Public Service' },
 ];
 
-const CareerInterestsStep = () => {
-  const { control, formState: { errors } } = useFormContext();
+export default function CareerInterestsStep() {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
-  const groupedOptions = careerOptions.reduce((acc, option) => {
+  const groupedOptions = careerOptions.reduce((acc: any, option) => {
     if (!acc[option.category]) {
       acc[option.category] = [];
     }
@@ -44,10 +48,10 @@ const CareerInterestsStep = () => {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom fontWeight="bold">
         What are your career interests?
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+      <Typography variant="body2" color="text.secondary" paragraph>
         Select all industries and roles that interest you. This helps us recommend relevant events.
       </Typography>
 
@@ -56,19 +60,21 @@ const CareerInterestsStep = () => {
         control={control}
         rules={{
           required: 'Please select at least one career interest',
-          validate: (value) => value.length > 0 || 'Please select at least one career interest'
+          validate: (value) => value.length > 0 || 'Please select at least one career interest',
         }}
         render={({ field }) => (
-          <FormControl error={!!errors.careerInterests} component="fieldset" variant="standard">
-            <FormLabel component="legend">Career Interests *</FormLabel>
-            
-            {Object.entries(groupedOptions).map(([category, options]) => (
-              <Box key={category} sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" sx={{ mb: 1, color: 'primary.main' }}>
+          <FormControl error={!!errors.careerInterests} component="fieldset" variant="standard" fullWidth>
+            <FormLabel component="legend" sx={{ mb: 2 }}>
+              Career Interests <Box component="span" color="error.main">*</Box>
+            </FormLabel>
+
+            {Object.entries(groupedOptions).map(([category, options]: [string, any]) => (
+              <Box key={category} sx={{ mb: 3 }}>
+                <Typography variant="subtitle2" color="primary.main" gutterBottom fontWeight="bold">
                   {category}
                 </Typography>
                 <FormGroup>
-                  {options.map((option) => (
+                  {options.map((option: any) => (
                     <FormControlLabel
                       key={option.value}
                       control={
@@ -77,7 +83,7 @@ const CareerInterestsStep = () => {
                           onChange={(e) => {
                             const newValue = e.target.checked
                               ? [...field.value, option.value]
-                              : field.value.filter((v) => v !== option.value);
+                              : field.value.filter((v: string) => v !== option.value);
                             field.onChange(newValue);
                           }}
                         />
@@ -90,21 +96,15 @@ const CareerInterestsStep = () => {
             ))}
 
             {field.value.length > 0 && (
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2" sx={{ mb: 1 }}>
+              <Box sx={{ mt: 2, p: 2, bgcolor: 'primary.50', borderRadius: 1 }}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
                   Selected interests:
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {field.value.map((interest) => {
-                    const option = careerOptions.find(opt => opt.value === interest);
+                  {field.value.map((interest: string) => {
+                    const option = careerOptions.find((opt) => opt.value === interest);
                     return (
-                      <Chip
-                        key={interest}
-                        label={option?.label}
-                        size="small"
-                        color="primary"
-                        variant="outlined"
-                      />
+                      <Chip key={interest} label={option?.label} color="primary" size="small" />
                     );
                   })}
                 </Box>
@@ -112,13 +112,11 @@ const CareerInterestsStep = () => {
             )}
 
             {errors.careerInterests && (
-              <FormHelperText>{errors.careerInterests.message}</FormHelperText>
+              <FormHelperText>{errors.careerInterests.message as string}</FormHelperText>
             )}
           </FormControl>
         )}
       />
     </Box>
   );
-};
-
-export default CareerInterestsStep;
+}

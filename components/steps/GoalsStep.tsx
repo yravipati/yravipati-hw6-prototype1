@@ -1,5 +1,8 @@
-import React from 'react';
+'use client';
+
+import { useFormContext, Controller } from 'react-hook-form';
 import {
+  Box,
   Typography,
   FormControl,
   FormLabel,
@@ -7,12 +10,10 @@ import {
   FormControlLabel,
   Checkbox,
   FormHelperText,
-  Box,
   Card,
   CardContent,
   Chip,
 } from '@mui/material';
-import { useFormContext, Controller } from 'react-hook-form';
 import {
   Work as WorkIcon,
   BusinessCenter as BusinessCenterIcon,
@@ -67,16 +68,20 @@ const goalOptions = [
   },
 ];
 
-const GoalsStep = () => {
-  const { control, formState: { errors }, watch } = useFormContext();
+export default function GoalsStep() {
+  const {
+    control,
+    formState: { errors },
+    watch,
+  } = useFormContext();
   const selectedGoals = watch('goals') || [];
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom fontWeight="bold">
         What are your primary goals?
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+      <Typography variant="body2" color="text.secondary" paragraph>
         Select all that apply. This helps us prioritize the most relevant events for you.
       </Typography>
 
@@ -85,11 +90,13 @@ const GoalsStep = () => {
         control={control}
         rules={{
           required: 'Please select at least one goal',
-          validate: (value) => value.length > 0 || 'Please select at least one goal'
+          validate: (value) => value.length > 0 || 'Please select at least one goal',
         }}
         render={({ field }) => (
-          <FormControl error={!!errors.goals} component="fieldset" variant="standard">
-            <FormLabel component="legend">Primary Goals *</FormLabel>
+          <FormControl error={!!errors.goals} component="fieldset" variant="standard" fullWidth>
+            <FormLabel component="legend" sx={{ mb: 2 }}>
+              Primary Goals <Box component="span" color="error.main">*</Box>
+            </FormLabel>
             <FormGroup sx={{ mt: 2 }}>
               {goalOptions.map((option) => (
                 <Card
@@ -97,17 +104,17 @@ const GoalsStep = () => {
                   sx={{
                     mb: 2,
                     cursor: 'pointer',
-                    border: field.value.includes(option.value) ? 2 : 1,
+                    border: 2,
                     borderColor: field.value.includes(option.value) ? `${option.color}.main` : 'divider',
-                    backgroundColor: field.value.includes(option.value) ? `${option.color}.50` : 'background.paper',
+                    bgcolor: field.value.includes(option.value) ? `${option.color}.50` : 'background.paper',
                     '&:hover': {
                       borderColor: `${option.color}.light`,
-                      backgroundColor: `${option.color}.50`,
+                      bgcolor: 'action.hover',
                     },
                   }}
                   onClick={() => {
                     const newValue = field.value.includes(option.value)
-                      ? field.value.filter((v) => v !== option.value)
+                      ? field.value.filter((v: string) => v !== option.value)
                       : [...field.value, option.value];
                     field.onChange(newValue);
                   }}
@@ -120,19 +127,17 @@ const GoalsStep = () => {
                           onChange={(e) => {
                             const newValue = e.target.checked
                               ? [...field.value, option.value]
-                              : field.value.filter((v) => v !== option.value);
+                              : field.value.filter((v: string) => v !== option.value);
                             field.onChange(newValue);
                           }}
-                          color={option.color}
+                          color={option.color as any}
                         />
                       }
                       label={
                         <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                          <Box sx={{ mr: 2, color: `${option.color}.main` }}>
-                            {option.icon}
-                          </Box>
+                          <Box sx={{ mr: 2, color: `${option.color}.main` }}>{option.icon}</Box>
                           <Box>
-                            <Typography variant="subtitle1" component="div">
+                            <Typography variant="subtitle1" component="div" fontWeight="bold">
                               {option.label}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
@@ -141,10 +146,10 @@ const GoalsStep = () => {
                           </Box>
                         </Box>
                       }
-                      sx={{ 
-                        m: 0, 
+                      sx={{
+                        m: 0,
                         width: '100%',
-                        '& .MuiFormControlLabel-label': { width: '100%' }
+                        '& .MuiFormControlLabel-label': { width: '100%' },
                       }}
                     />
                   </CardContent>
@@ -153,20 +158,19 @@ const GoalsStep = () => {
             </FormGroup>
 
             {selectedGoals.length > 0 && (
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2" sx={{ mb: 1 }}>
+              <Box sx={{ mt: 2, p: 2, bgcolor: 'secondary.50', borderRadius: 1 }}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
                   Selected goals:
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                  {selectedGoals.map((goalValue) => {
-                    const option = goalOptions.find(opt => opt.value === goalValue);
+                  {selectedGoals.map((goalValue: string) => {
+                    const option = goalOptions.find((opt) => opt.value === goalValue);
                     return (
                       <Chip
                         key={goalValue}
                         label={option?.label}
+                        color={option?.color as any}
                         size="small"
-                        color={option?.color}
-                        variant="outlined"
                       />
                     );
                   })}
@@ -174,14 +178,10 @@ const GoalsStep = () => {
               </Box>
             )}
 
-            {errors.goals && (
-              <FormHelperText>{errors.goals.message}</FormHelperText>
-            )}
+            {errors.goals && <FormHelperText>{errors.goals.message as string}</FormHelperText>}
           </FormControl>
         )}
       />
     </Box>
   );
-};
-
-export default GoalsStep;
+}

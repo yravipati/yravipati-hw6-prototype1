@@ -1,5 +1,8 @@
-import React from 'react';
+'use client';
+
+import { useFormContext, Controller } from 'react-hook-form';
 import {
+  Box,
   Typography,
   FormControl,
   FormLabel,
@@ -7,11 +10,9 @@ import {
   FormControlLabel,
   Radio,
   FormHelperText,
-  Box,
   Card,
   CardContent,
 } from '@mui/material';
-import { useFormContext, Controller } from 'react-hook-form';
 import {
   School as SchoolIcon,
   MenuBook as MenuBookIcon,
@@ -48,20 +49,23 @@ const classYearOptions = [
   {
     value: 'graduate',
     label: 'Graduate Student',
-    description: 'Master\'s, PhD, or other graduate program',
+    description: 'Master&apos;s, PhD, or other graduate program',
     icon: <EmojiPeopleIcon />,
   },
 ];
 
-const ClassYearStep = () => {
-  const { control, formState: { errors } } = useFormContext();
+export default function ClassYearStep() {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
-        What's your current class year?
+      <Typography variant="h5" gutterBottom fontWeight="bold">
+        What&apos;s your current class year?
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+      <Typography variant="body2" color="text.secondary" paragraph>
         This helps us recommend events appropriate for your academic level and career timeline.
       </Typography>
 
@@ -70,23 +74,23 @@ const ClassYearStep = () => {
         control={control}
         rules={{ required: 'Please select your class year' }}
         render={({ field }) => (
-          <FormControl error={!!errors.classYear} component="fieldset" variant="standard">
-            <FormLabel component="legend">Class Year *</FormLabel>
-            <RadioGroup
-              {...field}
-              sx={{ mt: 2 }}
-            >
+          <FormControl error={!!errors.classYear} component="fieldset" variant="standard" fullWidth>
+            <FormLabel component="legend" sx={{ mb: 2 }}>
+              Class Year <Box component="span" color="error.main">*</Box>
+            </FormLabel>
+            <RadioGroup {...field} sx={{ mt: 2 }}>
               {classYearOptions.map((option) => (
                 <Card
                   key={option.value}
                   sx={{
                     mb: 2,
                     cursor: 'pointer',
-                    border: field.value === option.value ? 2 : 1,
+                    border: 2,
                     borderColor: field.value === option.value ? 'primary.main' : 'divider',
+                    bgcolor: field.value === option.value ? 'primary.50' : 'background.paper',
                     '&:hover': {
                       borderColor: 'primary.light',
-                      backgroundColor: 'action.hover',
+                      bgcolor: 'action.hover',
                     },
                   }}
                   onClick={() => field.onChange(option.value)}
@@ -97,11 +101,9 @@ const ClassYearStep = () => {
                       control={<Radio />}
                       label={
                         <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                          <Box sx={{ mr: 2, color: 'primary.main' }}>
-                            {option.icon}
-                          </Box>
+                          <Box sx={{ mr: 2, color: 'primary.main' }}>{option.icon}</Box>
                           <Box>
-                            <Typography variant="subtitle1" component="div">
+                            <Typography variant="subtitle1" component="div" fontWeight="bold">
                               {option.label}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
@@ -110,10 +112,10 @@ const ClassYearStep = () => {
                           </Box>
                         </Box>
                       }
-                      sx={{ 
-                        m: 0, 
+                      sx={{
+                        m: 0,
                         width: '100%',
-                        '& .MuiFormControlLabel-label': { width: '100%' }
+                        '& .MuiFormControlLabel-label': { width: '100%' },
                       }}
                     />
                   </CardContent>
@@ -121,13 +123,11 @@ const ClassYearStep = () => {
               ))}
             </RadioGroup>
             {errors.classYear && (
-              <FormHelperText>{errors.classYear.message}</FormHelperText>
+              <FormHelperText>{errors.classYear.message as string}</FormHelperText>
             )}
           </FormControl>
         )}
       />
     </Box>
   );
-};
-
-export default ClassYearStep;
+}

@@ -1,5 +1,8 @@
-import React from 'react';
+'use client';
+
+import { useFormContext, Controller } from 'react-hook-form';
 import {
+  Box,
   Typography,
   FormControl,
   FormLabel,
@@ -7,46 +10,70 @@ import {
   FormControlLabel,
   Checkbox,
   TextField,
-  Box,
   Chip,
   Divider,
 } from '@mui/material';
-import { useFormContext, Controller } from 'react-hook-form';
 
 const technicalSkills = [
-  'Python', 'JavaScript', 'Java', 'C++', 'React', 'Node.js',
-  'SQL', 'Data Analysis', 'Machine Learning', 'AWS', 'Git',
-  'Excel', 'Tableau', 'R', 'MATLAB', 'Figma', 'Adobe Creative Suite'
+  'Python',
+  'JavaScript',
+  'Java',
+  'C++',
+  'React',
+  'Node.js',
+  'SQL',
+  'Data Analysis',
+  'Machine Learning',
+  'AWS',
+  'Git',
+  'Excel',
+  'Tableau',
+  'R',
+  'MATLAB',
+  'Figma',
+  'Adobe Creative Suite',
 ];
 
 const softSkills = [
-  'Leadership', 'Communication', 'Public Speaking', 'Project Management',
-  'Team Collaboration', 'Problem Solving', 'Critical Thinking',
-  'Time Management', 'Adaptability', 'Creativity', 'Negotiation',
-  'Customer Service', 'Research', 'Writing', 'Presentation Skills'
+  'Leadership',
+  'Communication',
+  'Public Speaking',
+  'Project Management',
+  'Team Collaboration',
+  'Problem Solving',
+  'Critical Thinking',
+  'Time Management',
+  'Adaptability',
+  'Creativity',
+  'Negotiation',
+  'Customer Service',
+  'Research',
+  'Writing',
+  'Presentation Skills',
 ];
 
-const SkillsStep = () => {
+export default function SkillsStep() {
   const { control, watch } = useFormContext();
   const selectedSkills = watch('skills') || [];
   const customSkills = watch('customSkills') || '';
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" gutterBottom fontWeight="bold">
         What are your skills?
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        Select your existing skills and add any custom ones. This helps us match you with relevant opportunities.
+      <Typography variant="body2" color="text.secondary" paragraph>
+        Select your existing skills and add any custom ones. This helps us match you with relevant
+        opportunities.
       </Typography>
 
       <Controller
         name="skills"
         control={control}
         render={({ field }) => (
-          <FormControl component="fieldset" variant="standard" sx={{ width: '100%' }}>
+          <FormControl component="fieldset" variant="standard" fullWidth>
             <Box sx={{ mb: 3 }}>
-              <FormLabel component="legend" sx={{ mb: 2 }}>
+              <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
                 Technical Skills
               </FormLabel>
               <FormGroup>
@@ -60,18 +87,13 @@ const SkillsStep = () => {
                           onChange={(e) => {
                             const newValue = e.target.checked
                               ? [...field.value, skill]
-                              : field.value.filter((v) => v !== skill);
+                              : field.value.filter((v: string) => v !== skill);
                             field.onChange(newValue);
                           }}
                           size="small"
                         />
                       }
-                      label={skill}
-                      sx={{ 
-                        mr: 2, 
-                        mb: 1,
-                        '& .MuiFormControlLabel-label': { fontSize: '0.875rem' }
-                      }}
+                      label={<Typography variant="body2">{skill}</Typography>}
                     />
                   ))}
                 </Box>
@@ -81,7 +103,7 @@ const SkillsStep = () => {
             <Divider sx={{ my: 2 }} />
 
             <Box sx={{ mb: 3 }}>
-              <FormLabel component="legend" sx={{ mb: 2 }}>
+              <FormLabel component="legend" sx={{ mb: 2, fontWeight: 'bold' }}>
                 Soft Skills
               </FormLabel>
               <FormGroup>
@@ -95,18 +117,13 @@ const SkillsStep = () => {
                           onChange={(e) => {
                             const newValue = e.target.checked
                               ? [...field.value, skill]
-                              : field.value.filter((v) => v !== skill);
+                              : field.value.filter((v: string) => v !== skill);
                             field.onChange(newValue);
                           }}
                           size="small"
                         />
                       }
-                      label={skill}
-                      sx={{ 
-                        mr: 2, 
-                        mb: 1,
-                        '& .MuiFormControlLabel-label': { fontSize: '0.875rem' }
-                      }}
+                      label={<Typography variant="body2">{skill}</Typography>}
                     />
                   ))}
                 </Box>
@@ -136,37 +153,24 @@ const SkillsStep = () => {
       />
 
       {(selectedSkills.length > 0 || customSkills) && (
-        <Box>
-          <Typography variant="body2" sx={{ mb: 1 }}>
+        <Box sx={{ p: 2, bgcolor: 'success.50', borderRadius: 1 }}>
+          <Typography variant="body2" fontWeight="bold" gutterBottom>
             Your skills:
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {selectedSkills.map((skill) => (
-              <Chip
-                key={skill}
-                label={skill}
-                size="small"
-                color="primary"
-                variant="outlined"
-              />
+            {selectedSkills.map((skill: string) => (
+              <Chip key={skill} label={skill} color="primary" size="small" />
             ))}
-            {customSkills && customSkills.split(',').map((skill, index) => {
-              const trimmedSkill = skill.trim();
-              return trimmedSkill ? (
-                <Chip
-                  key={`custom-${index}`}
-                  label={trimmedSkill}
-                  size="small"
-                  color="secondary"
-                  variant="outlined"
-                />
-              ) : null;
-            })}
+            {customSkills &&
+              customSkills.split(',').map((skill: string, index: number) => {
+                const trimmedSkill = skill.trim();
+                return trimmedSkill ? (
+                  <Chip key={`custom-${index}`} label={trimmedSkill} color="secondary" size="small" />
+                ) : null;
+              })}
           </Box>
         </Box>
       )}
     </Box>
   );
-};
-
-export default SkillsStep;
+}
