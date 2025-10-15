@@ -1,0 +1,22 @@
+{
+  "name": "eventus-onboarding-prototype",
+  "version": "1.0.0",
+  "description": "Full-stack demo prototype for user onboarding survey with Material Design",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "cd frontend && npm install && cd ../backend && npm install",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
+    "start": "cd backend && npm start",
+    "build": "cd frontend && npm run build",
+    "setup": "chmod +x setup.sh && ./setup.sh",
+    "test-api": "node test-api.js",
+    "migrate": "cd backend && npm run migrate",
+    "seed": "cd backend && npm run seed"
+  },
+  "keywords": ["react", "material-ui", "nodejs", "postgresql", "onboarding"],
+  "author": "Yashwanth Ravipati",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
