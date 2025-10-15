@@ -1,9 +1,12 @@
-backend/
-database/
-node_modules/
-.git/
+node_modules
+backend
+database
+.git
 *.log
 .env
+.env.local
 .DS_Store
+README.md
+DEMO_INSTRUCTIONS.md
 test-api.js
 setup.sh
