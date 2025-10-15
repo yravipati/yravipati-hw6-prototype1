@@ -18,7 +18,7 @@ import SkillsStep from './steps/SkillsStep';
 import ClassYearStep from './steps/ClassYearStep';
 import GoalsStep from './steps/GoalsStep';
 import ReviewStep from './steps/ReviewStep';
-import { submitProfile } from '../services/api';
+import { submitProfile } from '../lib/services/api';
 
 const steps = [
   'Career Interests',

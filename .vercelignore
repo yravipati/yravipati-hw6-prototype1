@@ -1,6 +1,9 @@
 backend/
+database/
 node_modules/
 .git/
 *.log
 .env
 .DS_Store
+test-api.js
+setup.sh
