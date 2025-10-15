@@ -63,6 +63,31 @@ npm start
 
 4. Open http://localhost:3000 to view the application
 
+## Deployment
+
+### Vercel Deployment (Frontend Only)
+
+This project is configured for easy deployment to Vercel with a mock API for demonstration purposes.
+
+1. **Connect to Vercel**:
+   - Go to [vercel.com](https://vercel.com) and sign in
+   - Import your GitHub repository
+   - Vercel will automatically detect it as a Create React App
+
+2. **Deployment Configuration**:
+   - The `vercel.json` file is already configured
+   - Frontend will be deployed with mock API responses
+   - No backend deployment needed for demo purposes
+
+3. **Environment Variables** (Optional):
+   - Set `REACT_APP_API_URL` if you have a separate backend deployed
+   - Leave empty to use the built-in mock API
+
+4. **Deploy**:
+   - Push to your main branch
+   - Vercel will automatically build and deploy
+   - The app will work with simulated API responses
+
 ## Project Structure
 
 ```

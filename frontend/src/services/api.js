@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
+// For demo purposes, we'll use a mock API in production
+const API_BASE_URL = process.env.REACT_APP_API_URL || 
+  (process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5002/api');
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -35,6 +37,23 @@ api.interceptors.response.use(
 
 export const submitProfile = async (profileData) => {
   try {
+    // In production, use mock API for demo purposes
+    if (process.env.NODE_ENV === 'production') {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock successful response
+      const mockProfileId = 'demo-' + Date.now();
+      console.log('Demo: Profile submitted successfully', { profileId: mockProfileId, data: profileData });
+      
+      return {
+        success: true,
+        profileId: mockProfileId,
+        data: { profileId: mockProfileId, ...profileData },
+      };
+    }
+    
+    // Development: use real API
     const response = await api.post('/user/profile', profileData);
     return {
       success: true,
@@ -52,6 +71,28 @@ export const submitProfile = async (profileData) => {
 
 export const getProfile = async (profileId) => {
   try {
+    // In production, use mock API for demo purposes
+    if (process.env.NODE_ENV === 'production') {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Mock profile data
+      const mockProfile = {
+        id: profileId,
+        careerInterests: ['tech-software', 'tech-data'],
+        skills: ['React', 'JavaScript', 'Material-UI'],
+        classYear: 'junior',
+        goals: ['internship', 'skills'],
+        createdAt: new Date().toISOString(),
+      };
+      
+      return {
+        success: true,
+        data: { profile: mockProfile },
+      };
+    }
+    
+    // Development: use real API
     const response = await api.get(`/user/profile/${profileId}`);
     return {
       success: true,

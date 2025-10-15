@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd frontend && npm ci && npm run build",
+  "outputDirectory": "frontend/build",
+  "installCommand": "npm ci --prefix frontend",
+  "devCommand": "cd frontend && npm start",
+  "framework": "create-react-app"
+}
